@@ -1,0 +1,7 @@
+{
+    "verbose": false,
+    "watch": [
+        "./server"
+    ],
+    "exec": "DEBUG=wayfarer:* babel-node server/bin/www.js"
+}
