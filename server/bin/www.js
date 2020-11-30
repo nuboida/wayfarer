@@ -6,7 +6,10 @@
 
 import { createServer } from 'http';
 import Debug from 'debug';
+import dotenv from 'dotenv';
 import app from '../app';
+
+dotenv.config();
 
 const debug = Debug('wayfarer:server');
 const debugError = Debug('wayfarer:error');
