@@ -29,3 +29,33 @@ paths:
       responses:
         200:
           description: Get Home Page
+  /signup:
+    post:
+      tags:
+      - User
+      summary: Create a new user
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: '' 
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+            password:
+              type: string
+      responses:
+        201:
+          description: Created
+        400:
+          description: Bad Request
