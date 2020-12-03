@@ -4,8 +4,11 @@ import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'body-parser';
 import swaggerMiddleware from './helpers/swagger';
+import createDB from './db/createDb';
 
 const app = express();
+
+createDB();
 
 app.disable('x-powered-by');
 app.use(logger('dev'));
