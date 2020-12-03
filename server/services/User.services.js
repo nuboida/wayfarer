@@ -35,10 +35,33 @@ class User {
 
     const hashedPassword = await bcrypt.hash(pw, 10);
 
-    return client.query(
+    await client.query(
       'INSERT INTO users (id, email, firstName, lastName, password, isAdmin) VALUES($1, $2, $3, $4, $5, false)',
       [v4(), email, fName, lName, hashedPassword],
     );
+
+    const newUser = await client.query(
+      'SELECT id, isadmin FROM users WHERE email = $1',
+      [email],
+    );
+
+    return newUser.rows[0];
+  }
+
+  async getUser(email, pw) {
+    if (!email && !pw) {
+      throw new Error('Enter email address and password');
+    }
+    const user = await client.query(
+      'SELECT * FROM users WHERE email = $1',
+      [email],
+    );
+
+    const match = await bcrypt.compareSync(pw, user.rows[0].password);
+    if (!match) {
+      throw new Error('Password mismatch');
+    }
+    return user.rows[0];
   }
 }
 

@@ -22,6 +22,7 @@ paths:
       responses:
         200:
           description: Return the API specification
+
   /:
     get:
       tags:
@@ -29,7 +30,8 @@ paths:
       responses:
         200:
           description: Get Home Page
-  /signup:
+
+  /auth/signup:
     post:
       tags:
       - User
@@ -59,3 +61,30 @@ paths:
           description: Created
         400:
           description: Bad Request
+  
+  /auth/signin:
+    post:
+      tags:
+        - User
+      summary: Sign in existing user.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: Existing user should sign in
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        201:
+          description: Created
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+  
