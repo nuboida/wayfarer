@@ -48,7 +48,7 @@ class User {
     return newUser.rows[0];
   }
 
-  async getUser(email, pw) {
+  async signin(email, pw) {
     if (!email && !pw) {
       throw new Error('Enter email address and password');
     }
@@ -61,6 +61,15 @@ class User {
     if (!match) {
       throw new Error('Password mismatch');
     }
+    return user.rows[0];
+  }
+
+  async getUser(id) {
+    const user = await client.query(
+      'SELECT * FROM users WHERE id = $1',
+      [id],
+    );
+
     return user.rows[0];
   }
 }
