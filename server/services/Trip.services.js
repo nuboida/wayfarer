@@ -15,9 +15,12 @@ class Trip {
   }
 
   async getTrips() {
-    const trips = await client.query('SELECT * FROM trips');
-
-    return trips.rows;
+    try {
+      const trips = await client.query('SELECT * FROM trips');
+      return trips.rows;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 }
 

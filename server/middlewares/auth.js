@@ -6,6 +6,7 @@ dotenv.config();
 
 const auth = expressJwt({
   secret: process.env.JWT_SECRET_KEY,
+  algorithms: ['sha1', 'RS256', 'HS256'],
   userProperty: 'auth',
 });
 

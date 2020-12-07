@@ -84,7 +84,6 @@ const userById = async (req, res, next, id) => {
 
 const readUser = (req, res) => {
   req.profile.password = undefined;
-  console.log(req.auth);
   return res.status(200).json({
     status: 'success',
     data: req.profile,
@@ -92,7 +91,7 @@ const readUser = (req, res) => {
 };
 
 const viewTrips = async (req, res) => {
-  const trip = await new Trip();
+  const trip = new Trip();
   try {
     const allTrips = await trip.getTrips();
 

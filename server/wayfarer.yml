@@ -94,7 +94,7 @@ paths:
         500:
           description: Internal Server Error
   
-  "/users/{userId}":
+  "/{userId}":
     get:
       tags:
       - User
@@ -116,3 +116,24 @@ paths:
           description: Invalid Id supplied
       security:
       - Bearer: []
+  
+  "/{userId}/trips":
+    get:
+      tags:
+      - Trips
+      summary: Get all trips
+      description: Returns all trips
+      operationId: getUserById
+      produces:
+      - apllication/json
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user to return
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successul operation
+        404:
+          description: Resource not found

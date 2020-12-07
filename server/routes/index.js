@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  homepage, signup, signin, userById, readUser,
+  homepage, signup, signin, userById, readUser, viewTrips,
 } from '../controllers/controller';
 import { auth, hasAuthorization } from '../middlewares/auth';
 
@@ -13,6 +13,9 @@ router.get('/', homepage);
 router.post('/auth/signup', signup);
 router.post('/auth/signin', signin);
 router.param('userId', userById);
-router.get('/users/:userId', auth, hasAuthorization, readUser);
+router.get('/:userId', auth, hasAuthorization, readUser);
+
+// Trips
+router.get('/:userId/trips', viewTrips);
 
 export default router;
