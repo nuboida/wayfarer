@@ -17,60 +17,72 @@ class User {
   }
 
   async create(email, fName, lName, pw) {
-    if (!fName || fName === '') {
-      throw new Error('First name is required');
-    }
-    if (!lName || lName === '') {
-      throw new Error('Last name is required');
-    }
-    if (!email.match(/.+\@.+..+/ig)) {
-      throw new Error('Fill a valid email address');
-    }
-    if (!pw || pw === '') {
-      throw Error('Password is required');
-    }
-    if (pw.length < 6) {
-      throw Error('Password must be atleast 6 characters');
-    }
+    try {
+      if (!fName || fName === '') {
+        throw new Error('First name is required');
+      }
+      if (!lName || lName === '') {
+        throw new Error('Last name is required');
+      }
+      if (!email.match(/.+\@.+..+/ig)) {
+        throw new Error('Fill a valid email address');
+      }
+      if (!pw || pw === '') {
+        throw Error('Password is required');
+      }
+      if (pw.length < 6) {
+        throw Error('Password must be atleast 6 characters');
+      }
 
-    const hashedPassword = await bcrypt.hash(pw, 10);
+      const hashedPassword = await bcrypt.hash(pw, 10);
 
-    await client.query(
-      'INSERT INTO users (id, email, firstName, lastName, password, isAdmin) VALUES($1, $2, $3, $4, $5, false)',
-      [v4(), email, fName, lName, hashedPassword],
-    );
+      await client.query(
+        'INSERT INTO users (id, email, firstName, lastName, password, isAdmin) VALUES($1, $2, $3, $4, $5, false)',
+        [v4(), email, fName, lName, hashedPassword],
+      );
 
-    const newUser = await client.query(
-      'SELECT id, isadmin FROM users WHERE email = $1',
-      [email],
-    );
+      const newUser = await client.query(
+        'SELECT id, isadmin FROM users WHERE email = $1',
+        [email],
+      );
 
-    return newUser.rows[0];
+      return newUser.rows[0];
+    } catch (err) {
+      throw new Error(err.message);
+    }
   }
 
   async signin(email, pw) {
-    if (!email && !pw) {
-      throw new Error('Enter email address and password');
-    }
-    const user = await client.query(
-      'SELECT * FROM users WHERE email = $1',
-      [email],
-    );
+    try {
+      if (!email && !pw) {
+        throw new Error('Enter email address and password');
+      }
+      const user = await client.query(
+        'SELECT * FROM users WHERE email = $1',
+        [email],
+      );
 
-    const match = await bcrypt.compareSync(pw, user.rows[0].password);
-    if (!match) {
-      throw new Error('Password mismatch');
+      const match = await bcrypt.compareSync(pw, user.rows[0].password);
+      if (!match) {
+        throw new Error('Password mismatch');
+      }
+      return user.rows[0];
+    } catch (err) {
+      throw new Error(err.message);
     }
-    return user.rows[0];
   }
 
   async getUser(id) {
-    const user = await client.query(
-      'SELECT * FROM users WHERE id = $1',
-      [id],
-    );
+    try {
+      const user = await client.query(
+        'SELECT * FROM users WHERE id = $1',
+        [id],
+      );
 
-    return user.rows[0];
+      return user.rows[0];
+    } catch (err) {
+      throw new Error(err.message);
+    }
   }
 }
 

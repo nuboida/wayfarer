@@ -116,6 +116,44 @@ paths:
           description: Invalid Id supplied
       security:
       - Bearer: []
+
+  "/{userId}/bus":
+    post:
+      tags:
+        - Bus
+      summary: Create Bus.
+      consumes:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          description: bus can be created by admin
+          required: true
+          type: string
+        - in: body
+          description: New bus is created
+          schema:
+            type: object
+            properties:
+              plateNumber:
+                type: string
+              manufacturer:
+                type: string
+              model:
+                type: string
+              year:
+                type: string
+              capacity:
+                type: number
+      responses:
+        201:
+          description: Bus Created
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorised
+      security:
+        - Bearer: []
   
   "/{userId}/trips":
     get:
@@ -134,6 +172,8 @@ paths:
         type: string
       responses:
         200:
-          description: Successul operation
+          description: Successful operation
         404:
           description: Resource not found
+      security:
+        - Bearer: []

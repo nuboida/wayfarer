@@ -1,8 +1,18 @@
 import { Router } from 'express';
 import {
-  homepage, signup, signin, userById, readUser, viewTrips,
+  homepage,
+  signup,
+  signin,
+  userById,
+  readUser,
+  viewTrips,
+  createBus,
 } from '../controllers/controller';
-import { auth, hasAuthorization } from '../middlewares/auth';
+import {
+  auth,
+  hasAuthorization,
+  adminAuthorization,
+} from '../middlewares/auth';
 
 const router = Router();
 
@@ -15,7 +25,10 @@ router.post('/auth/signin', signin);
 router.param('userId', userById);
 router.get('/:userId', auth, hasAuthorization, readUser);
 
+// Create Bus
+router.post('/:userId/bus', auth, adminAuthorization, createBus);
+
 // Trips
-router.get('/:userId/trips', viewTrips);
+router.get('/:userId/trips', auth, hasAuthorization, viewTrips);
 
 export default router;
