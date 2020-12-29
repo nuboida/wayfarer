@@ -7,6 +7,7 @@ import {
   readUser,
   viewTrips,
   createBus,
+  createTrip,
 } from '../controllers/controller';
 import {
   auth,
@@ -27,6 +28,7 @@ router.get('/:userId', auth, hasAuthorization, readUser);
 
 // Create Bus
 router.post('/:userId/bus', auth, adminAuthorization, createBus);
+router.post('/:userId/trip', auth, adminAuthorization, createTrip);
 
 // Trips
 router.get('/:userId/trips', auth, hasAuthorization, viewTrips);

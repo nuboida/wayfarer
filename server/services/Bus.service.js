@@ -34,7 +34,7 @@ class Bus {
       );
       return bus.rows[0];
     } catch (err) {
-      throw new Error('Cannot get bus');
+      throw new Error(err.message);
     }
   }
 }

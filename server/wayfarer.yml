@@ -120,8 +120,8 @@ paths:
   "/{userId}/bus":
     post:
       tags:
-        - Bus
-      summary: Create Bus.
+        - Admin
+      summary: Admin can create new bus.
       consumes:
         - application/json
       parameters:
@@ -154,12 +154,52 @@ paths:
           description: Unauthorised
       security:
         - Bearer: []
+
+  "/{userId}/trip":
+    post:
+      tags:
+        - Admin
+      summary: Admin can create new trip.
+      consumes:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          description: trip can be created by admin
+          required: true
+          type: string
+        - in: body
+          description: New trip is created
+          schema:
+            type: object
+            properties:
+              busId:
+                type: string
+              origin:
+                type: string
+              destination:
+                type: string
+              tripDate:
+                type: string
+              fare:
+                type: number
+              status:
+                type: string
+      responses:
+        201:
+          description: Bus Created
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorised
+      security:
+        - Bearer: []
   
   "/{userId}/trips":
     get:
       tags:
       - Trips
-      summary: Get all trips
+      summary: User signed in can get all trips
       description: Returns all trips
       operationId: getUserById
       produces:

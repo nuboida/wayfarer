@@ -47,7 +47,7 @@ const adminAuthorization = (req, res, next) => {
   if (!req.profile.isadmin) {
     return res.status(401).json({
       status: 'error',
-      error: 'User is not authorised',
+      error: 'User is not authorised, only admin allowed',
     });
   }
   next();

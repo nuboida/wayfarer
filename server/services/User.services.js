@@ -36,6 +36,7 @@ class User {
 
       const hashedPassword = await bcrypt.hash(pw, 10);
 
+      // Change admin input to true to sign in as admin
       await client.query(
         'INSERT INTO users (id, email, firstName, lastName, password, isAdmin) VALUES($1, $2, $3, $4, $5, false)',
         [v4(), email, fName, lName, hashedPassword],

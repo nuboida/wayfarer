@@ -1,12 +1,14 @@
 /* eslint-disable consistent-return */
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import Debug from 'debug';
 import User from '../services/User.services';
 import Trip from '../services/Trip.services';
 import Bus from '../services/Bus.service';
 import getErrorMessage from '../helpers/errorHandlers';
 
 dotenv.config();
+const debugUser = Debug('wayfarer:currentUser');
 
 const homepage = (req, res) => res.status(200).json({
   status: 'success',
@@ -94,7 +96,7 @@ const userById = async (req, res, next, id) => {
 
 const readUser = (req, res) => {
   req.profile.password = undefined;
-  console.log(req.profile);
+  debugUser(req.profile);
   return res.status(200).json({
     status: 'success',
     data: req.profile,
@@ -102,6 +104,7 @@ const readUser = (req, res) => {
 };
 
 const createBus = async (req, res) => {
+  debugUser(req.profile);
   const {
     plateNumber,
     manufacturer,
@@ -117,6 +120,35 @@ const createBus = async (req, res) => {
       status: 'success',
       data: {
         busData,
+      },
+    });
+  } catch (err) {
+    return res.status(400).json({
+      status: 'error',
+      error: getErrorMessage(err),
+    });
+  }
+};
+
+const createTrip = async (req, res) => {
+  const {
+    busId,
+    origin,
+    destination,
+    tripDate,
+    fare,
+    status,
+  } = req.body;
+  try {
+    const newTrip = await new Trip();
+    const tripData = await newTrip.createTrip(
+      busId, origin, destination, tripDate, fare, status,
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        tripData,
       },
     });
   } catch (err) {
@@ -150,5 +182,6 @@ export {
   userById,
   readUser,
   createBus,
+  createTrip,
   viewTrips,
 };
